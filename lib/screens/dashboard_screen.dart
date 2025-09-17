@@ -8,6 +8,7 @@ import '../widgets/sos_button.dart';
 import '../widgets/eta_display.dart';
 import 'login_screen.dart';
 import 'sos_screen.dart';
+import 'settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -43,79 +44,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  void _showSignOutDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: const Text(
-            'Sign Out',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-          content: const Text(
-            'Are you sure you want to sign out? GPS tracking will be stopped.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                'Cancel',
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _handleSignOut();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red[600],
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text('Sign Out'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
-      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         title: const Text(
           'Bus Driver',
           style: TextStyle(
             fontWeight: FontWeight.w500,
-            color: Colors.white,
           ),
         ),
-        backgroundColor: Color(0xFF4F86C6),
-        elevation: 0,
         actions: [
           // SOS Button in top right corner
           Container(
             margin: const EdgeInsets.only(right: 8),
-            child: IconButton(
-              onPressed: () {
+            child: GestureDetector(
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SosScreen()),
                 );
               },
-              icon: Container(
-                padding: const EdgeInsets.all(8),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.red[600],
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.red.withOpacity(0.3),
@@ -124,61 +80,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.warning,
-                  color: Colors.white,
-                  size: 20,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.warning,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                    const SizedBox(width: 4),
+                    const Text(
+                      'SOS',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              tooltip: 'Emergency SOS',
             ),
           ),
-          Consumer<AuthProvider>(
-            builder: (context, authProvider, child) {
-              return PopupMenuButton<String>(
-                icon: const Icon(Icons.account_circle, color: Colors.white),
-                onSelected: (value) {
-                  if (value == 'signout') {
-                    _showSignOutDialog();
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    enabled: false,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          authProvider.user?['displayName'] ?? 'Driver',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          authProvider.user?['email'] ?? '',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuDivider(),
-                  const PopupMenuItem(
-                    value: 'signout',
-                    child: Row(
-                      children: [
-                        Icon(Icons.logout, size: 20),
-                        SizedBox(width: 8),
-                        Text('Sign Out'),
-                      ],
-                    ),
-                  ),
-                ],
+          IconButton(
+            icon: const Icon(Icons.settings, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
               );
             },
+            tooltip: 'Settings',
           ),
         ],
       ),
@@ -202,14 +136,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Color(0xFF4F86C6), Color(0xFF3D6BB0)],
+                          colors: isDarkMode 
+                            ? [const Color(0xFF6BB6FF), const Color(0xFF4F86C6)]
+                            : [const Color(0xFF4F86C6), const Color(0xFF3D6BB0)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0xFF4F86C6).withOpacity(0.3),
+                            color: (isDarkMode 
+                              ? const Color(0xFF6BB6FF) 
+                              : const Color(0xFF4F86C6)).withOpacity(0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -324,7 +262,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 
                 // Additional Info Card
                 Card(
-                  elevation: 2,
+                  elevation: isDarkMode ? 4 : 2,
+                  color: isDarkMode ? const Color(0xFF1A1A1A) : null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -337,7 +276,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           children: [
                             Icon(
                               Icons.info_outline,
-                              color: Color(0xFF4F86C6),
+                              color: isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6),
                               size: 20,
                             ),
                             const SizedBox(width: 8),
@@ -345,7 +284,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               'Info',
                               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.w500,
-                                color: Colors.grey[700],
+                                color: isDarkMode ? Colors.white70 : Colors.grey[700],
                               ),
                             ),
                           ],
@@ -375,8 +314,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required String value,
     required Color color,
   }) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Card(
-      elevation: 2,
+      elevation: isDarkMode ? 4 : 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -394,7 +335,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     title,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: isDarkMode ? Colors.white70 : Colors.grey[600],
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -417,6 +358,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildInfoRow(String label, String value) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -425,14 +368,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Text(
             label,
             style: TextStyle(
-              color: Colors.grey[600],
+              color: isDarkMode ? Colors.white60 : Colors.grey[600],
               fontSize: 12,
             ),
           ),
           Text(
             value,
             style: TextStyle(
-              color: Colors.grey[800],
+              color: isDarkMode ? Colors.white : Colors.grey[800],
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

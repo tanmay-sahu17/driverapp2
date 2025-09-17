@@ -77,8 +77,10 @@ class _SosScreenState extends State<SosScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.grey[50],
       appBar: AppBar(
         title: const Text(
           'Emergency SOS',
@@ -103,11 +105,15 @@ class _SosScreenState extends State<SosScreen> {
                   // Emergency Status Card
                   Card(
                     elevation: _isEmergencyActive ? 8 : 2,
-                    color: _isEmergencyActive ? Colors.red[50] : Colors.white,
+                    color: _isEmergencyActive 
+                        ? (isDarkMode ? const Color(0xFF4C1E1E) : Colors.red[50])
+                        : (isDarkMode ? const Color(0xFF2C2C2C) : Colors.white),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                       side: BorderSide(
-                        color: _isEmergencyActive ? Colors.red : Colors.grey[300]!,
+                        color: _isEmergencyActive 
+                            ? Colors.red 
+                            : (isDarkMode ? Colors.grey[600]! : Colors.grey[300]!),
                         width: _isEmergencyActive ? 2 : 1,
                       ),
                     ),
@@ -118,7 +124,9 @@ class _SosScreenState extends State<SosScreen> {
                           Icon(
                             _isEmergencyActive ? Icons.warning : Icons.security,
                             size: 48,
-                            color: _isEmergencyActive ? Colors.red : Colors.grey[600],
+                            color: _isEmergencyActive 
+                                ? Colors.red 
+                                : (isDarkMode ? Colors.grey[400] : Colors.grey[600]),
                           ),
                           const SizedBox(height: 12),
                           Text(
@@ -126,7 +134,9 @@ class _SosScreenState extends State<SosScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
-                              color: _isEmergencyActive ? Colors.red[700] : Colors.grey[700],
+                              color: _isEmergencyActive 
+                                  ? Colors.red[700] 
+                                  : (isDarkMode ? Colors.grey[300] : Colors.grey[700]),
                             ),
                           ),
                           if (_isEmergencyActive && _emergencyMessage != null) ...[
@@ -135,7 +145,7 @@ class _SosScreenState extends State<SosScreen> {
                               _emergencyMessage!,
                               style: TextStyle(
                                 fontSize: 14,
-                                color: Colors.red[600],
+                                color: isDarkMode ? Colors.red[400] : Colors.red[600],
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -151,6 +161,7 @@ class _SosScreenState extends State<SosScreen> {
                   if (locationProvider.currentPosition != null) ...[
                     Card(
                       elevation: 2,
+                      color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -163,7 +174,7 @@ class _SosScreenState extends State<SosScreen> {
                               children: [
                                 Icon(
                                   Icons.location_on,
-                                  color: Colors.blue[600],
+                                  color: isDarkMode ? const Color(0xFF6BB6FF) : Colors.blue[600],
                                   size: 20,
                                 ),
                                 const SizedBox(width: 8),
@@ -172,7 +183,7 @@ class _SosScreenState extends State<SosScreen> {
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.grey[800],
+                                    color: isDarkMode ? Colors.white : Colors.grey[800],
                                   ),
                                 ),
                               ],
@@ -192,6 +203,7 @@ class _SosScreenState extends State<SosScreen> {
                   // Emergency Message Input
                   Card(
                     elevation: 2,
+                    color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -205,18 +217,34 @@ class _SosScreenState extends State<SosScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey[800],
+                              color: isDarkMode ? Colors.white : Colors.grey[800],
                             ),
                           ),
                           const SizedBox(height: 12),
                           TextField(
                             controller: _messageController,
                             maxLines: 3,
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            ),
                             decoration: InputDecoration(
                               hintText: 'Describe your emergency (optional)',
+                              hintStyle: TextStyle(
+                                color: isDarkMode ? Colors.grey[400] : Colors.grey[500],
+                              ),
+                              filled: true,
+                              fillColor: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(color: Colors.grey[300]!),
+                                borderSide: BorderSide(
+                                  color: isDarkMode ? Colors.grey[600]! : Colors.grey[300]!,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: isDarkMode ? Colors.grey[600]! : Colors.grey[300]!,
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -264,6 +292,7 @@ class _SosScreenState extends State<SosScreen> {
                   // Emergency Contacts
                   Card(
                     elevation: 2,
+                    color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -277,7 +306,7 @@ class _SosScreenState extends State<SosScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey[800],
+                              color: isDarkMode ? Colors.white : Colors.grey[800],
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -307,6 +336,8 @@ class _SosScreenState extends State<SosScreen> {
   }
 
   Widget _buildInfoRow(String label, String value) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -315,14 +346,14 @@ class _SosScreenState extends State<SosScreen> {
           Text(
             label,
             style: TextStyle(
-              color: Colors.grey[600],
+              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
               fontSize: 14,
             ),
           ),
           Text(
             value,
             style: TextStyle(
-              color: Colors.grey[800],
+              color: isDarkMode ? Colors.white : Colors.grey[800],
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
@@ -333,6 +364,8 @@ class _SosScreenState extends State<SosScreen> {
   }
 
   Widget _buildContactRow(String name, String number, IconData icon) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: InkWell(
@@ -343,7 +376,9 @@ class _SosScreenState extends State<SosScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[300]!),
+            border: Border.all(
+              color: isDarkMode ? Colors.grey[600]! : Colors.grey[300]!,
+            ),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Row(
@@ -351,13 +386,15 @@ class _SosScreenState extends State<SosScreen> {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: isDarkMode 
+                      ? const Color(0xFF1E3A8A).withOpacity(0.3)
+                      : Colors.blue[50],
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
                   size: 16,
-                  color: Colors.blue[600],
+                  color: isDarkMode ? const Color(0xFF6BB6FF) : Colors.blue[600],
                 ),
               ),
               const SizedBox(width: 8),
@@ -370,14 +407,14 @@ class _SosScreenState extends State<SosScreen> {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
-                        color: Colors.grey[800],
+                        color: isDarkMode ? Colors.white : Colors.grey[800],
                       ),
                     ),
                     Text(
                       number,
                       style: TextStyle(
                         fontSize: 11,
-                        color: Colors.grey[600],
+                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                       ),
                     ),
                   ],
@@ -386,7 +423,7 @@ class _SosScreenState extends State<SosScreen> {
               Icon(
                 Icons.phone,
                 size: 16,
-                color: Colors.green[600],
+                color: isDarkMode ? const Color(0xFF4CAF50) : Colors.green[600],
               ),
             ],
           ),

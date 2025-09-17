@@ -77,6 +77,8 @@ class _EtaDisplayState extends State<EtaDisplay> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Consumer<LocationProvider>(
       builder: (context, locationProvider, child) {
         // Recalculate ETA when location changes
@@ -88,6 +90,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
 
         return Card(
           elevation: 2,
+          color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -100,7 +103,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
                   children: [
                     Icon(
                       Icons.schedule,
-                      color: Colors.green[600],
+                      color: isDarkMode ? const Color(0xFF6BB6FF) : Colors.green[600],
                       size: 24,
                     ),
                     const SizedBox(width: 8),
@@ -108,7 +111,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
                       'Next Stop ETA',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey[800],
+                        color: isDarkMode ? Colors.white : Colors.grey[800],
                       ),
                     ),
                   ],
@@ -122,7 +125,12 @@ class _EtaDisplayState extends State<EtaDisplay> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.green[50]!, Colors.green[100]!],
+                        colors: isDarkMode 
+                            ? [
+                                const Color(0xFF1E1E1E),
+                                const Color(0xFF2A2A2A),
+                              ]
+                            : [Colors.green[50]!, Colors.green[100]!],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -197,23 +205,32 @@ class _EtaDisplayState extends State<EtaDisplay> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.blue[50],
+                        color: isDarkMode 
+                            ? const Color(0xFF1E3A8A).withOpacity(0.3)
+                            : Colors.blue[50],
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.blue[200]!),
+                        border: Border.all(
+                          color: isDarkMode 
+                              ? const Color(0xFF3B82F6).withOpacity(0.5)
+                              : Colors.blue[200]!,
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.route, 
-                                   color: Colors.blue[600], size: 16),
+                              Icon(
+                                Icons.route, 
+                                color: isDarkMode ? const Color(0xFF3B82F6) : Colors.blue[600], 
+                                size: 16
+                              ),
                               const SizedBox(width: 8),
                               Text(
                                 'Route Progress',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.blue[700],
+                                  color: isDarkMode ? const Color(0xFF3B82F6) : Colors.blue[700],
                                   fontSize: 12,
                                 ),
                               ),
@@ -226,7 +243,9 @@ class _EtaDisplayState extends State<EtaDisplay> {
                             width: double.infinity,
                             height: 6,
                             decoration: BoxDecoration(
-                              color: Colors.blue[100],
+                              color: isDarkMode 
+                                  ? const Color(0xFF1E3A8A).withOpacity(0.5)
+                                  : Colors.blue[100],
                               borderRadius: BorderRadius.circular(3),
                             ),
                             child: FractionallySizedBox(
@@ -234,7 +253,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
                               widthFactor: 0.3, // Mock 30% progress
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.blue[600],
+                                  color: isDarkMode ? const Color(0xFF3B82F6) : Colors.blue[600],
                                   borderRadius: BorderRadius.circular(3),
                                 ),
                               ),
@@ -245,7 +264,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
                           Text(
                             'Stop 1 of ${MockBusData.getBusByNumber(locationProvider.selectedBusNumber!)?.stops.length ?? 0}',
                             style: TextStyle(
-                              color: Colors.blue[600],
+                              color: isDarkMode ? const Color(0xFF3B82F6) : Colors.blue[600],
                               fontSize: 11,
                             ),
                           ),
@@ -259,15 +278,17 @@ class _EtaDisplayState extends State<EtaDisplay> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.grey[50],
+                      color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.grey[50],
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey[300]!),
+                      border: Border.all(
+                        color: isDarkMode ? Colors.grey[600]! : Colors.grey[300]!,
+                      ),
                     ),
                     child: Column(
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: Colors.grey[400],
+                          color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
                           size: 32,
                         ),
                         const SizedBox(height: 8),
@@ -275,7 +296,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
                           'ETA Not Available',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: Colors.grey[600],
+                            color: isDarkMode ? Colors.grey[300] : Colors.grey[600],
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -286,7 +307,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
                                   ? 'Enable location to calculate ETA'
                                   : 'Route information not available',
                           style: TextStyle(
-                            color: Colors.grey[500],
+                            color: isDarkMode ? Colors.grey[400] : Colors.grey[500],
                             fontSize: 12,
                           ),
                           textAlign: TextAlign.center,
@@ -298,19 +319,46 @@ class _EtaDisplayState extends State<EtaDisplay> {
                 
                 // Refresh Button
                 const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: _calculateEta,
-                    icon: const Icon(Icons.refresh, size: 18),
-                    label: const Text(
-                      'Refresh ETA',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDarkMode 
+                            ? Colors.black.withOpacity(0.3)
+                            : Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _calculateEta,
+                      icon: Icon(
+                        Icons.refresh, 
+                        size: 18,
+                        color: isDarkMode ? const Color(0xFF6BB6FF) : null,
+                      ),
+                      label: Text(
+                        'Refresh ETA',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: isDarkMode ? const Color(0xFF6BB6FF) : null,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        backgroundColor: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
+                        side: BorderSide(
+                          color: isDarkMode 
+                              ? const Color(0xFF6BB6FF).withOpacity(0.5)
+                              : Colors.grey[300]!,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
                   ),

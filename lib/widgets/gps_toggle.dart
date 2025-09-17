@@ -76,10 +76,13 @@ class _GpsToggleState extends State<GpsToggle> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Consumer<LocationProvider>(
       builder: (context, locationProvider, child) {
         return Card(
           elevation: 2,
+          color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -93,8 +96,8 @@ class _GpsToggleState extends State<GpsToggle> {
                     Icon(
                       Icons.gps_fixed,
                       color: locationProvider.isTracking 
-                          ? Colors.green[600] 
-                          : Colors.grey[600],
+                          ? (isDarkMode ? const Color(0xFF4CAF50) : Colors.green[600])
+                          : (isDarkMode ? Colors.grey[400] : Colors.grey[600]),
                       size: 24,
                     ),
                     const SizedBox(width: 8),
@@ -115,13 +118,21 @@ class _GpsToggleState extends State<GpsToggle> {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: locationProvider.isTracking 
-                        ? Colors.green[50] 
-                        : Colors.grey[50],
+                        ? (isDarkMode 
+                            ? const Color(0xFF0D4F3C).withOpacity(0.3)
+                            : Colors.green[50])
+                        : (isDarkMode 
+                            ? const Color(0xFF1E1E1E)
+                            : Colors.grey[50]),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: locationProvider.isTracking 
-                          ? Colors.green[200]! 
-                          : Colors.grey[300]!,
+                          ? (isDarkMode 
+                              ? const Color(0xFF4CAF50).withOpacity(0.5)
+                              : Colors.green[200]!)
+                          : (isDarkMode 
+                              ? Colors.grey[600]!
+                              : Colors.grey[300]!),
                     ),
                   ),
                   child: Row(
@@ -132,8 +143,8 @@ class _GpsToggleState extends State<GpsToggle> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: locationProvider.isTracking 
-                              ? Colors.green[600] 
-                              : Colors.grey[400],
+                              ? (isDarkMode ? const Color(0xFF4CAF50) : Colors.green[600])
+                              : (isDarkMode ? Colors.grey[500] : Colors.grey[400]),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -178,9 +189,11 @@ class _GpsToggleState extends State<GpsToggle> {
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.only(top: 12),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.grey[100],
                       borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.grey[300]!),
+                      border: Border.all(
+                        color: isDarkMode ? Colors.grey[600]! : Colors.grey[300]!,
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,13 +201,14 @@ class _GpsToggleState extends State<GpsToggle> {
                         Row(
                           children: [
                             Icon(Icons.my_location, 
-                                 color: Colors.green[600], size: 14),
+                                 color: isDarkMode ? const Color(0xFF6BB6FF) : Colors.green[600], 
+                                 size: 14),
                             const SizedBox(width: 6),
                             Text(
                               'Location',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                color: Colors.grey[700],
+                                color: isDarkMode ? Colors.grey[300] : Colors.grey[700],
                                 fontSize: 13,
                               ),
                             ),
@@ -205,7 +219,7 @@ class _GpsToggleState extends State<GpsToggle> {
                           '${locationProvider.currentPosition!.latitude.toStringAsFixed(4)}, ${locationProvider.currentPosition!.longitude.toStringAsFixed(4)}',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                             fontFamily: 'monospace',
                           ),
                         ),
@@ -216,7 +230,7 @@ class _GpsToggleState extends State<GpsToggle> {
                               'Acc: ${locationProvider.currentPosition!.accuracy.toStringAsFixed(0)}m',
                               style: TextStyle(
                                 fontSize: 10,
-                                color: Colors.grey[500],
+                                color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -224,7 +238,7 @@ class _GpsToggleState extends State<GpsToggle> {
                               '${locationProvider.currentPosition!.speed.toStringAsFixed(1)} m/s',
                               style: TextStyle(
                                 fontSize: 10,
-                                color: Colors.grey[500],
+                                color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
                               ),
                             ),
                           ],

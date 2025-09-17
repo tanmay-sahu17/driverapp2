@@ -56,8 +56,11 @@ class _BusSelectorState extends State<BusSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Card(
       elevation: 2,
+      color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -70,7 +73,7 @@ class _BusSelectorState extends State<BusSelector> {
               children: [
                 Icon(
                   Icons.directions_bus,
-                  color: Color(0xFF4F86C6),
+                  color: isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6),
                   size: 24,
                 ),
                 const SizedBox(width: 8),
@@ -78,7 +81,7 @@ class _BusSelectorState extends State<BusSelector> {
                   'Select Bus',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: Colors.grey[800],
+                    color: isDarkMode ? Colors.white : Colors.grey[800],
                   ),
                 ),
               ],
@@ -86,35 +89,80 @@ class _BusSelectorState extends State<BusSelector> {
             const SizedBox(height: 12),
             
             // Bus Selection
-            TextFormField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: 'Bus Number',
-                hintText: 'BUS001, BUS002...',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: selectedBusNumber != null
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          setState(() {
-                            selectedBusNumber = null;
-                            _searchController.clear();
-                          });
-                          Provider.of<LocationProvider>(context, listen: false)
-                              .setBusNumber('');
-                        },
-                      )
-                    : const Icon(Icons.keyboard_arrow_down),
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                ),
-                filled: true,
-                fillColor: Colors.grey[50],
+            Container(
+              decoration: BoxDecoration(
+                color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: isDarkMode 
+                        ? Colors.black.withOpacity(0.3)
+                        : Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              readOnly: false,
-              onTap: () {
-                _showBusSelectionModal();
-              },
+              child: TextFormField(
+                controller: _searchController,
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
+                decoration: InputDecoration(
+                  labelText: 'Bus Number',
+                  labelStyle: TextStyle(
+                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  ),
+                  hintText: 'BUS001, BUS002...',
+                  hintStyle: TextStyle(
+                    color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  ),
+                  suffixIcon: selectedBusNumber != null
+                      ? IconButton(
+                          icon: Icon(
+                            Icons.clear,
+                            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedBusNumber = null;
+                              _searchController.clear();
+                            });
+                            Provider.of<LocationProvider>(context, listen: false)
+                                .setBusNumber('');
+                          },
+                        )
+                      : Icon(
+                          Icons.keyboard_arrow_down,
+                          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        ),
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide(
+                      color: isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6), 
+                      width: 2
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
+                ),
+                readOnly: false,
+                onTap: () {
+                  _showBusSelectionModal();
+                },
+              ),
             ),
             
             if (selectedBusNumber != null) ...[
@@ -122,13 +170,23 @@ class _BusSelectorState extends State<BusSelector> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green[50],
+                  color: isDarkMode 
+                      ? const Color(0xFF0D4F3C).withOpacity(0.3)
+                      : Colors.green[50],
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.green[200]!),
+                  border: Border.all(
+                    color: isDarkMode 
+                        ? const Color(0xFF4CAF50).withOpacity(0.5)
+                        : Colors.green[200]!,
+                  ),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green[600], size: 20),
+                    Icon(
+                      Icons.check_circle, 
+                      color: isDarkMode ? const Color(0xFF4CAF50) : Colors.green[600], 
+                      size: 20
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
@@ -138,7 +196,7 @@ class _BusSelectorState extends State<BusSelector> {
                             'Assigned: $selectedBusNumber',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: Colors.green[700],
+                              color: isDarkMode ? const Color(0xFF4CAF50) : Colors.green[700],
                             ),
                           ),
                           Text(

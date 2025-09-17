@@ -101,14 +101,13 @@ class AuthProvider with ChangeNotifier {
   /// Sign out method (mock)
   Future<void> signOut() async {
     _clearError();
-    _setLoading(true);
-
-    // Simulate network delay
-    await Future.delayed(Duration(milliseconds: 500));
-
+    
+    // Clear user data immediately without showing loading state
     _isSignedIn = false;
     _userDisplayName = null;
-    _setLoading(false);
     notifyListeners();
+    
+    // Any cleanup can happen in background without affecting UI
+    await Future.delayed(Duration(milliseconds: 100));
   }
 }
