@@ -1,0 +1,202 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
+class AuthService {
+  static AuthService? _instance;
+  static AuthService get instance => _instance ??= AuthService._();
+  AuthService._();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  /// Get current user
+  User? get currentUser => _auth.currentUser;
+
+  /// Check if user is signed in
+  bool get isSignedIn => _auth.currentUser != null;
+
+  /// Get auth state changes stream
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  /// Sign in with email and password
+  Future<AuthResult> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
+      
+      return AuthResult(
+        success: true,
+        user: result.user,
+        message: 'Sign in successful',
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found with this email address.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Invalid password. Please try again.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'Invalid email address format.';
+          break;
+        case 'user-disabled':
+          errorMessage = 'This account has been disabled.';
+          break;
+        case 'too-many-requests':
+          errorMessage = 'Too many attempts. Please try again later.';
+          break;
+        default:
+          errorMessage = 'Sign in failed. Please try again.';
+      }
+      
+      return AuthResult(
+        success: false,
+        message: errorMessage,
+      );
+    } catch (e) {
+      return AuthResult(
+        success: false,
+        message: 'An unexpected error occurred. Please try again.',
+      );
+    }
+  }
+
+  /// Create account with email and password
+  Future<AuthResult> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String displayName,
+  }) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
+
+      // Update display name
+      if (result.user != null) {
+        await result.user!.updateDisplayName(displayName);
+        await result.user!.reload();
+      }
+
+      return AuthResult(
+        success: true,
+        user: result.user,
+        message: 'Account created successfully',
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      switch (e.code) {
+        case 'weak-password':
+          errorMessage = 'Password is too weak. Use at least 6 characters.';
+          break;
+        case 'email-already-in-use':
+          errorMessage = 'An account already exists with this email address.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'Invalid email address format.';
+          break;
+        case 'operation-not-allowed':
+          errorMessage = 'Email/password accounts are not enabled.';
+          break;
+        default:
+          errorMessage = 'Account creation failed. Please try again.';
+      }
+
+      return AuthResult(
+        success: false,
+        message: errorMessage,
+      );
+    } catch (e) {
+      return AuthResult(
+        success: false,
+        message: 'An unexpected error occurred. Please try again.',
+      );
+    }
+  }
+
+  /// Sign out
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      print('Error signing out: $e');
+    }
+  }
+
+  /// Reset password
+  Future<AuthResult> resetPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email.trim());
+      return AuthResult(
+        success: true,
+        message: 'Password reset email sent. Check your inbox.',
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found with this email address.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'Invalid email address format.';
+          break;
+        default:
+          errorMessage = 'Failed to send reset email. Please try again.';
+      }
+
+      return AuthResult(
+        success: false,
+        message: errorMessage,
+      );
+    } catch (e) {
+      return AuthResult(
+        success: false,
+        message: 'An unexpected error occurred. Please try again.',
+      );
+    }
+  }
+
+  /// Update user profile
+  Future<bool> updateProfile({
+    String? displayName,
+    String? photoURL,
+  }) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user == null) return false;
+
+      if (displayName != null) {
+        await user.updateDisplayName(displayName);
+      }
+      
+      if (photoURL != null) {
+        await user.updatePhotoURL(photoURL);
+      }
+
+      await user.reload();
+      return true;
+    } catch (e) {
+      print('Error updating profile: $e');
+      return false;
+    }
+  }
+}
+
+/// Auth result model
+class AuthResult {
+  final bool success;
+  final User? user;
+  final String message;
+
+  AuthResult({
+    required this.success,
+    this.user,
+    required this.message,
+  });
+}
