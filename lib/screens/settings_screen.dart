@@ -179,119 +179,85 @@ class SettingsScreen extends StatelessWidget {
       builder: (context, themeProvider, child) {
         return Card(
           elevation: isDarkMode ? 4 : 2,
-          child: Column(
-            children: [
-              // Light Mode
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: !themeProvider.isDarkMode 
-                      ? (isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6))
-                      : (isDarkMode ? Colors.grey[700] : Colors.grey[300]),
-                  radius: 12,
-                  child: !themeProvider.isDarkMode
-                      ? Icon(
-                          Icons.check, 
-                          color: isDarkMode ? Colors.black : Colors.white, 
-                          size: 16,
-                        )
-                      : Icon(
-                          Icons.light_mode, 
-                          color: isDarkMode ? Colors.white54 : Colors.grey, 
-                          size: 16,
-                        ),
-                ),
-                title: Text(
-                  'Light Mode',
-                  style: TextStyle(
-                    fontWeight: !themeProvider.isDarkMode ? FontWeight.w600 : FontWeight.normal,
-                    color: !themeProvider.isDarkMode 
-                        ? Theme.of(context).primaryColor 
-                        : null,
-                  ),
-                ),
-                trailing: !themeProvider.isDarkMode 
-                    ? Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).primaryColor,
-                      )
-                    : Icon(
-                        Icons.radio_button_unchecked,
-                        color: isDarkMode ? Colors.white54 : Colors.grey,
-                      ),
-                onTap: () {
-                  if (themeProvider.isDarkMode) {
-                    themeProvider.setThemeMode(ThemeMode.light);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Switched to Light Mode'),
-                        backgroundColor: Colors.green[600],
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    );
-                  }
-                },
+          color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: isDarkMode 
+                  ? const Color(0xFF6BB6FF).withValues(alpha: 0.2)
+                  : const Color(0xFF4F86C6).withValues(alpha: 0.1),
+              radius: 20,
+              child: Icon(
+                themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                color: isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6),
+                size: 20,
               ),
-              Divider(
-                height: 1,
-                color: isDarkMode ? Colors.white24 : Colors.grey[300],
+            ),
+            title: Text(
+              'Dark Mode',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                color: isDarkMode ? Colors.white : Colors.grey[800],
               ),
-              // Dark Mode
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: themeProvider.isDarkMode 
-                      ? (isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6))
-                      : (isDarkMode ? Colors.grey[700] : Colors.grey[300]),
-                  radius: 12,
-                  child: themeProvider.isDarkMode
-                      ? Icon(
-                          Icons.check, 
-                          color: isDarkMode ? Colors.black : Colors.white, 
-                          size: 16,
-                        )
-                      : Icon(
-                          Icons.dark_mode, 
-                          color: isDarkMode ? Colors.white54 : Colors.grey, 
-                          size: 16,
-                        ),
-                ),
-                title: Text(
-                  'Dark Mode',
-                  style: TextStyle(
-                    fontWeight: themeProvider.isDarkMode ? FontWeight.w600 : FontWeight.normal,
-                    color: themeProvider.isDarkMode 
-                        ? Theme.of(context).primaryColor 
-                        : null,
-                  ),
-                ),
-                trailing: themeProvider.isDarkMode 
-                    ? Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).primaryColor,
-                      )
-                    : Icon(
-                        Icons.radio_button_unchecked,
-                        color: isDarkMode ? Colors.white54 : Colors.grey,
-                      ),
-                onTap: () {
-                  if (!themeProvider.isDarkMode) {
-                    themeProvider.setThemeMode(ThemeMode.dark);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Switched to Dark Mode'),
-                        backgroundColor: Colors.green[600],
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    );
-                  }
-                },
+            ),
+            subtitle: Text(
+              themeProvider.isDarkMode ? 'Dark theme enabled' : 'Light theme enabled',
+              style: TextStyle(
+                fontSize: 12,
+                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
               ),
-            ],
+            ),
+            trailing: Switch.adaptive(
+              value: themeProvider.isDarkMode,
+              onChanged: (bool value) {
+                if (value) {
+                  themeProvider.setThemeMode(ThemeMode.dark);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Row(
+                        children: [
+                          Icon(Icons.dark_mode, color: Colors.white, size: 20),
+                          SizedBox(width: 8),
+                          Text('Switched to Dark Mode'),
+                        ],
+                      ),
+                      backgroundColor: Colors.grey[800],
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                } else {
+                  themeProvider.setThemeMode(ThemeMode.light);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Row(
+                        children: [
+                          Icon(Icons.light_mode, color: Colors.white, size: 20),
+                          SizedBox(width: 8),
+                          Text('Switched to Light Mode'),
+                        ],
+                      ),
+                      backgroundColor: Colors.blue[600],
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
+              activeThumbColor: const Color(0xFF6BB6FF),
+              activeTrackColor: const Color(0xFF6BB6FF).withValues(alpha: 0.3),
+              inactiveThumbColor: Colors.grey[400],
+              inactiveTrackColor: Colors.grey[300],
+            ),
           ),
         );
       },
