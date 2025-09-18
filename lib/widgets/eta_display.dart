@@ -103,7 +103,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
                   children: [
                     Icon(
                       Icons.schedule,
-                      color: isDarkMode ? const Color(0xFF6BB6FF) : Colors.green[600],
+                      color: isDarkMode ? const Color(0xFF6CB5A8) : Colors.green[600],
                       size: 24,
                     ),
                     const SizedBox(width: 8),
@@ -339,13 +339,13 @@ class _EtaDisplayState extends State<EtaDisplay> {
                       icon: Icon(
                         Icons.refresh, 
                         size: 18,
-                        color: isDarkMode ? const Color(0xFF6BB6FF) : null,
+                        color: isDarkMode ? const Color(0xFF6CB5A8) : null,
                       ),
                       label: Text(
                         'Refresh ETA',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          color: isDarkMode ? const Color(0xFF6BB6FF) : null,
+                          color: isDarkMode ? const Color(0xFF6CB5A8) : null,
                         ),
                       ),
                       style: OutlinedButton.styleFrom(
@@ -353,7 +353,7 @@ class _EtaDisplayState extends State<EtaDisplay> {
                         backgroundColor: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
                         side: BorderSide(
                           color: isDarkMode 
-                              ? const Color(0xFF6BB6FF).withOpacity(0.5)
+                              ? const Color(0xFF6CB5A8).withOpacity(0.5)
                               : Colors.grey[300]!,
                         ),
                         shape: RoundedRectangleBorder(

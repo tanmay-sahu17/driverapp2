@@ -14,14 +14,14 @@ class ThemeProvider with ChangeNotifier {
   ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    primaryColor: const Color(0xFF4F86C6),
+    primaryColor: const Color(0xFF4A9B8E), // Teal main color
     scaffoldBackgroundColor: Colors.grey[50],
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color(0xFF4F86C6),
+      seedColor: const Color(0xFF4A9B8E), // Teal seed color
       brightness: Brightness.light,
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF4F86C6),
+      backgroundColor: Color(0xFF4A9B8E), // Teal app bar
       foregroundColor: Colors.white,
       centerTitle: false,
       elevation: 0,
@@ -40,7 +40,7 @@ class ThemeProvider with ChangeNotifier {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF4F86C6),
+        backgroundColor: const Color(0xFF4A9B8E), // Teal buttons
         foregroundColor: Colors.white,
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -50,19 +50,19 @@ class ThemeProvider with ChangeNotifier {
     ),
   );
   
-  /// Dark theme configuration - Modern dark design
+  /// Dark theme configuration - Modern dark design with teal accents
   ThemeData get darkTheme => ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    primaryColor: const Color(0xFF6BB6FF), // Lighter blue for dark theme
-    scaffoldBackgroundColor: const Color(0xFF0A0A0A), // Even darker background
+    primaryColor: const Color(0xFF6CB5A8), // Light teal for dark theme
+    scaffoldBackgroundColor: const Color(0xFF0A0A0A), // Dark background
     colorScheme: const ColorScheme.dark(
-      primary: Color(0xFF6BB6FF),
-      secondary: Color(0xFF03DAC6),
+      primary: Color(0xFF6CB5A8), // Light teal
+      secondary: Color(0xFF4A9B8E), // Teal accent
       surface: Color(0xFF161616), // Darker surface
       background: Color(0xFF0A0A0A), // Darker background
       onPrimary: Colors.black,
-      onSecondary: Colors.black,
+      onSecondary: Colors.white,
       onSurface: Colors.white,
       onBackground: Colors.white,
     ),
@@ -86,7 +86,7 @@ class ThemeProvider with ChangeNotifier {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF6BB6FF),
+        backgroundColor: const Color(0xFF6CB5A8), // Light teal buttons
         foregroundColor: Colors.black,
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -107,7 +107,7 @@ class ThemeProvider with ChangeNotifier {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(8)),
-        borderSide: BorderSide(color: Color(0xFF6BB6FF), width: 2),
+        borderSide: BorderSide(color: Color(0xFF6CB5A8), width: 2), // Teal focus
       ),
     ),
     textTheme: const TextTheme(

@@ -174,7 +174,7 @@ class _SosScreenState extends State<SosScreen> {
                               children: [
                                 Icon(
                                   Icons.location_on,
-                                  color: isDarkMode ? const Color(0xFF6BB6FF) : Colors.blue[600],
+                                  color: isDarkMode ? const Color(0xFF6CB5A8) : Colors.blue[600],
                                   size: 20,
                                 ),
                                 const SizedBox(width: 8),
@@ -394,7 +394,7 @@ class _SosScreenState extends State<SosScreen> {
                 child: Icon(
                   icon,
                   size: 16,
-                  color: isDarkMode ? const Color(0xFF6BB6FF) : Colors.blue[600],
+                  color: isDarkMode ? const Color(0xFF6CB5A8) : Colors.blue[600],
                 ),
               ),
               const SizedBox(width: 8),

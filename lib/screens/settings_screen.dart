@@ -91,7 +91,7 @@ class SettingsScreen extends StatelessWidget {
               // User Info
               ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6),
+                  backgroundColor: isDarkMode ? const Color(0xFF6CB5A8) : const Color(0xFF4A9B8E),
                   child: Text(
                     (authProvider.user?['displayName'] ?? 'D')[0].toUpperCase(),
                     style: TextStyle(
@@ -186,12 +186,12 @@ class SettingsScreen extends StatelessWidget {
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: isDarkMode 
-                  ? const Color(0xFF6BB6FF).withValues(alpha: 0.2)
-                  : const Color(0xFF4F86C6).withValues(alpha: 0.1),
+                  ? const Color(0xFF6CB5A8).withValues(alpha: 0.2)
+                  : const Color(0xFF4A9B8E).withValues(alpha: 0.1),
               radius: 20,
               child: Icon(
                 themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                color: isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6),
+                color: isDarkMode ? const Color(0xFF6CB5A8) : const Color(0xFF4A9B8E),
                 size: 20,
               ),
             ),
@@ -253,8 +253,8 @@ class SettingsScreen extends StatelessWidget {
                   );
                 }
               },
-              activeThumbColor: const Color(0xFF6BB6FF),
-              activeTrackColor: const Color(0xFF6BB6FF).withValues(alpha: 0.3),
+              activeThumbColor: const Color(0xFF6CB5A8),
+              activeTrackColor: const Color(0xFF6CB5A8).withValues(alpha: 0.3),
               inactiveThumbColor: Colors.grey[400],
               inactiveTrackColor: Colors.grey[300],
             ),

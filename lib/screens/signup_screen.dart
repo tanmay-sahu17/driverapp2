@@ -125,7 +125,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(color: Color(0xFF4F86C6), width: 2),
+                              borderSide: BorderSide(color: Color(0xFF4A9B8E), width: 2),
                             ),
                             filled: true,
                             fillColor: Colors.white,
@@ -173,7 +173,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(color: Color(0xFF4F86C6), width: 2),
+                              borderSide: BorderSide(color: Color(0xFF4A9B8E), width: 2),
                             ),
                             filled: true,
                             fillColor: Colors.white,
@@ -233,7 +233,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             focusedBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(color: Color(0xFF4F86C6), width: 2),
+                              borderSide: BorderSide(color: Color(0xFF4A9B8E), width: 2),
                             ),
                             filled: true,
                             fillColor: Colors.white,
@@ -294,7 +294,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             focusedBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(color: Color(0xFF4F86C6), width: 2),
+                              borderSide: BorderSide(color: Color(0xFF4A9B8E), width: 2),
                             ),
                             filled: true,
                             fillColor: Colors.white,

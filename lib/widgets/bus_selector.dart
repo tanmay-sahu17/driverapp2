@@ -73,7 +73,7 @@ class _BusSelectorState extends State<BusSelector> {
               children: [
                 Icon(
                   Icons.directions_bus,
-                  color: isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6),
+                  color: isDarkMode ? const Color(0xFF6CB5A8) : const Color(0xFF4A9B8E),
                   size: 24,
                 ),
                 const SizedBox(width: 8),
@@ -151,7 +151,7 @@ class _BusSelectorState extends State<BusSelector> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                     borderSide: BorderSide(
-                      color: isDarkMode ? const Color(0xFF6BB6FF) : const Color(0xFF4F86C6), 
+                      color: isDarkMode ? const Color(0xFF6CB5A8) : const Color(0xFF4A9B8E), 
                       width: 2
                     ),
                   ),

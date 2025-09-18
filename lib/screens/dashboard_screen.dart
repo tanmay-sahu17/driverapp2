@@ -137,8 +137,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: isDarkMode 
-                            ? [const Color(0xFF6BB6FF), const Color(0xFF4F86C6)]
-                            : [const Color(0xFF4F86C6), const Color(0xFF3D6BB0)],
+                            ? [const Color(0xFF6CB5A8), const Color(0xFF4A9B8E)]
+                            : [const Color(0xFF4A9B8E), const Color(0xFF3B8B7E)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -146,8 +146,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         boxShadow: [
                           BoxShadow(
                             color: (isDarkMode 
-                              ? const Color(0xFF6BB6FF) 
-                              : const Color(0xFF4F86C6)).withOpacity(0.3),
+                              ? const Color(0xFF6CB5A8) 
+                              : const Color(0xFF4A9B8E)).withOpacity(0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),

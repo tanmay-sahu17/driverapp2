@@ -201,7 +201,7 @@ class _GpsToggleState extends State<GpsToggle> {
                         Row(
                           children: [
                             Icon(Icons.my_location, 
-                                 color: isDarkMode ? const Color(0xFF6BB6FF) : Colors.green[600], 
+                                 color: isDarkMode ? const Color(0xFF6CB5A8) : Colors.green[600], 
                                  size: 14),
                             const SizedBox(width: 6),
                             Text(
